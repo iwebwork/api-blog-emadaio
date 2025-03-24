@@ -1,16 +1,14 @@
-﻿using Api.Contexts;
-using Api.Models;
-using Infraestrutura.Controllers;
-using Infraestrutura.Repository.Interfaces;
-using Infraestrutura.Validation;
+﻿using Infraestrutura.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Posts;
 
-[Route("Posts")]
-public class PostsController(IResponseControler responseControler,
-    IRelationalRepository<Post, ResponseViewModel, SqliteDbContext> repository,
-    IValidationBase<Post, RequestViewModel, SqliteDbContext> validation) : CrudController<Post, RequestViewModel, ResponseViewModel, SqliteDbContext>(responseControler, repository, validation)
+[Route("api/posts")]
+public class PostsController(IResponseControler responseControler) : BaseAutenticateController(responseControler)
 {
-
+    [HttpPost, Route("getTable")]
+    public async Task GetRequest(CancellationToken cancellationToken)
+    {
+        responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
+    }
 }
