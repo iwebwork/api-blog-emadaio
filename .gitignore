@@ -8,3 +8,5 @@
 /Api/obj
 /Api/.vs/ApiBlogEmadaio
 /Api/BlogEmadaio.db
+*.db-shm
+*.db-wal
