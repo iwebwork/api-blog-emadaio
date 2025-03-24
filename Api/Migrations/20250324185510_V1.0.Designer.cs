@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20250324172750_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250324185510_V1.0")]
+    partial class V10
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,13 +43,12 @@ namespace Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Inserted")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Liberado")
+                    b.Property<short>("Liberado")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")

@@ -40,13 +40,12 @@ namespace Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Inserted")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Liberado")
+                    b.Property<short>("Liberado")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
