@@ -16,6 +16,13 @@ public class PostsController(IResponseControler responseControler,
         responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
     }
 
+    [HttpPost, Route("select/{id}")]
+    public async Task GetRequest(Guid id, CancellationToken cancellationToken)
+    {
+        responseControler.SetResponseData(await repository.GetAsync(id, cancellationToken));
+        responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
+    }
+
     [HttpPost, Route("insert")]
     public async Task InsertAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {

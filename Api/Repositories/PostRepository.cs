@@ -26,6 +26,7 @@ public class PostRepository(SqliteDbContext context) :
             LiberadoNome = s.Liberado.ToString(),
             Name = s.Name,
             Tipo = s.Tipo,
+            TipoNome = s.Tipo.ToString(),
             Title = s.Title
         }).ToListAsync(cancellationToken);
     }

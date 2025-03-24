@@ -10,6 +10,7 @@ public class ResponseViewModel : BaseViewModel
     public DateTime Date { get; set; }
     public string? Image { get; set; }
     public ETipo Tipo { get; set; }
+    public string TipoNome { get; set; }
     public string Corpo { get; set; }
     public ELiberado Liberado { get; set; }
     public string LiberadoNome { get; set; }
