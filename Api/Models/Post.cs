@@ -1,9 +1,8 @@
 ﻿using Infraestrutura.Models;
-using static Api.Models.Post;
 
 namespace Api.Models;
 
-public class Post(string name, string title, DateTime date, string? image, ETipo tipo, string corpo, ELiberado liberado) : BaseModel
+public class Post : BaseModel
 {
     public enum ETipo : short
     {
@@ -18,11 +17,39 @@ public class Post(string name, string title, DateTime date, string? image, ETipo
     }
 
 
-    public string Name { get; private set; } = name;
-    public string Title { get; private set; } = title;
-    public DateTime Date { get; private set; } = date;
-    public string? Image { get; private set; } = image;
-    public ETipo Tipo { get; private set; } = tipo;
-    public string Corpo { get; private set; } = corpo;
-    public ELiberado Liberado { get; private set; } = liberado;
+    public string Name { get; private set; }
+    public string Title { get; private set; }
+    public DateTime Date { get; private set; }
+    public string? Image { get; private set; }
+    public ETipo Tipo { get; private set; }
+    public string Corpo { get; private set; }
+    public ELiberado Liberado { get; private set; }
+
+    public Post(Guid id, string name, string title, DateTime date, string? image, ETipo tipo, string corpo, ELiberado liberado) : base(id)
+    {
+        Id = id;
+        Name = name;
+        Title = title;
+        Date = date;
+        Image = image;
+        Tipo = tipo;
+        Corpo = corpo;
+        Liberado = liberado;
+    }
+
+    public Post(string name, string title, DateTime date, string? image, ETipo tipo, string corpo, ELiberado liberado) : base()
+    {
+        Name = name;
+        Title = title;
+        Date = date;
+        Image = image;
+        Tipo = tipo;
+        Corpo = corpo;
+        Liberado = liberado;
+    }
+
+    public void LiberarPost()
+    {
+        Liberado = ELiberado.Sim;
+    }
 }
