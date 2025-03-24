@@ -7,8 +7,8 @@ namespace Api.Controllers;
 public class HomeController(IResponseControler responseController) : BaseController(responseController)
 {
     [HttpGet]
-    public string Index()
+    public void Index()
     {
-        return "Ola mundo";
+        responseController.AddMessageSuccesso("Deu");
     }
 }
