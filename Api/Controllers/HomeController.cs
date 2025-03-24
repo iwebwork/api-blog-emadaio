@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infraestrutura.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[Route("api/test")]
+public class HomeController(IResponseControler responseController) : BaseController(responseController)
 {
-    public class HomeController : Controller
+    [HttpGet]
+    public string Index()
     {
-        public string Index()
-        {
-            return "Ola mundo";
-        }
+        return "Ola mundo";
     }
 }
