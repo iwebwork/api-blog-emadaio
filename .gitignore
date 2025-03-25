@@ -10,3 +10,4 @@
 /Api/BlogEmadaio.db
 *.db-shm
 *.db-wal
+/Api/.vs/ProjectEvaluation
