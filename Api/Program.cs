@@ -11,6 +11,15 @@ builder.Services
     .AddSqlite<SqliteDbContext>()
     .AddDependencyInjection()
     .AddDbContext<SqliteDbContext>()
+    .AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+    })
     .AddEndpointsApiExplorer()
     .AddControllers();
 
@@ -18,8 +27,11 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
+
+app.UseCors();
 
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
