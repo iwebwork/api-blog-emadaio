@@ -102,21 +102,25 @@ public class PostsController(IResponseControler responseControler,
             return NotFound();
         }
 
-        string base64DataWithPrefix = model.Image;
-
-        string mimeType = "image/png"; // "image/jpeg", "image/gif" e etc;
-
-        // Extrai apenas os dados Base64
-        string base64DataOnly = base64DataWithPrefix.Substring(base64DataWithPrefix.IndexOf(',') + 1);
-
         try
         {
-            byte[] imageBytes = Convert.FromBase64String(base64DataOnly);
+            string mimeType = "image/png"; // "image/jpeg", "image/gif" e etc;
+            byte[] imageBytes = GetImagemFromBase64(model.Image);
             return File(imageBytes, mimeType);
         }
         catch (FormatException)
         {
             return BadRequest("Formato Base64 inválido (após remoção do prefixo).");
         }
+    }
+
+    private static byte[] GetImagemFromBase64(string imageBase64)
+    {
+        string base64DataWithPrefix = imageBase64;
+
+        // Extrai apenas os dados Base64
+        string base64DataOnly = base64DataWithPrefix.Substring(base64DataWithPrefix.IndexOf(',') + 1);
+
+        return Convert.FromBase64String(base64DataOnly);
     }
 }
