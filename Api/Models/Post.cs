@@ -6,8 +6,8 @@ public class Post : BaseModel
 {
     public enum ETipo : short
     {
-        Noticias = 1,
-        Reviews = 2
+        noticias = 1,
+        reviews = 2
     }
 
     public enum ELiberado : short
