@@ -16,7 +16,6 @@ public class Post : BaseModel
         Nao = 2
     }
 
-
     public string Name { get; private set; }
     public string Title { get; private set; }
     public DateTime Date { get; private set; }
