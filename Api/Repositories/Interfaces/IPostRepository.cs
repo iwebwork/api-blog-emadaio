@@ -3,7 +3,7 @@ using Api.Controllers.Posts;
 using Api.Models;
 using Infraestrutura.Repository.Interfaces;
 
-namespace Api.Repositories;
+namespace Api.Repositories.Interfaces;
 
 public interface IPostRepository : IRelationalRepository<Post, ResponseViewModel, SqliteDbContext>
 {

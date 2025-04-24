@@ -1,5 +1,6 @@
 ﻿using Api.Contexts;
-using Api.Repositories;
+using Api.Repositories.Implementations;
+using Api.Repositories.Interfaces;
 using Infraestrutura.Controllers;
 
 namespace Api.Configurations;
@@ -12,6 +13,7 @@ public static class DependencyInjectionConfiguration
         services.AddDbContext<SqliteDbContext>();
 
         services.AddScoped<IPostRepository, PostRepository>();
+        services.AddScoped<IImagesPostRepository, ImagesPostRepository>();
         return services;
     }
 }

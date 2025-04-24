@@ -1,10 +1,11 @@
 ﻿using Api.Contexts;
 using Api.Controllers.Posts;
 using Api.Models;
+using Api.Repositories.Interfaces;
 using Infraestrutura.Repository.Implementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Repositories;
+namespace Api.Repositories.Implementations;
 
 public class PostRepository(SqliteDbContext context) :
     RelationalRepository<Post, ResponseViewModel, SqliteDbContext>(context), IPostRepository
