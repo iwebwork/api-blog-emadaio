@@ -1,4 +1,4 @@
-﻿using Infraestrutura.Models;
+﻿using Infraestrutura.ViewModels;
 using static Api.Models.Post;
 
 namespace Api.Controllers.Posts;
