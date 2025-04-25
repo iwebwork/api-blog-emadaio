@@ -48,21 +48,21 @@ public class PostsController(IResponseControler responseControler,
     [HttpPost, Route("edit")]
     public async Task EditAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
-        if (!await repository.AnyAsync(requestViewModel.Id.Value, cancellationToken))
+        var model = await repository.GetAsync(requestViewModel.Id.Value, cancellationToken);
+
+        if (model == null)
         {
             responseControler.AddMessageErro("O post informado não existe!");
             return;
         }
 
-        Post model = new(id: requestViewModel.Id.Value,
-            name: requestViewModel.Name,
+        model.Update(name: requestViewModel.Name,
             title: requestViewModel.Title,
             date: requestViewModel.Date,
             image: requestViewModel.Image,
             tipo: requestViewModel.Tipo,
             corpo: requestViewModel.Corpo,
             liberado: requestViewModel.Liberado);
-
 
         await repository.UpdateAsync(model, cancellationToken);
         responseControler.AddMessageSuccesso("Post editado com sucesso!");
