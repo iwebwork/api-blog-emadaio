@@ -12,3 +12,7 @@
 *.db-wal
 /Api/.vs/ProjectEvaluation
 /Api/exe.txt
+/.vs/VSWorkspaceState.json
+/.vs/ApiBlogEmadaio/v17/.wsuo
+/.vs/ApiBlogEmadaio/v17/DocumentLayout.json
+/.vs/ApiBlogEmadaio/v17/DocumentLayout.backup.json
