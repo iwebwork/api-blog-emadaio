@@ -10,7 +10,7 @@ public static class DependencyInjectionConfiguration
     public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
     {
         services.AddScoped<IResponseControler, ResponseControler>();
-        services.AddDbContext<SqliteDbContext>();
+        services.AddDbContext<PostgresDbContext>();
 
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IImagesPostRepository, ImagesPostRepository>();

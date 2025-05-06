@@ -3,50 +3,52 @@ using System;
 using Api.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Api.Migrations
+namespace Api.Migrations.PostgresDb
 {
-    [DbContext(typeof(SqliteDbContext))]
-    [Migration("20250424125347_ImagesPost")]
-    partial class ImagesPost
+    [DbContext(typeof(PostgresDbContext))]
+    partial class PostgresDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Api.Models.ImagesPost", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AspNetUserInsertId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AspNetUserUpdateId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("Deleted")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Inserted")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("PostId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Updated")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -59,50 +61,50 @@ namespace Api.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AspNetUserInsertId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AspNetUserUpdateId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Corpo")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("Deleted")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Image")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Inserted")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<short>("Liberado")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<short>("Tipo")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Updated")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Api.Models.ImagesPost", b =>

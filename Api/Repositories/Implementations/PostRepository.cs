@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Repositories.Implementations;
 
-public class PostRepository(SqliteDbContext context) :
-    RelationalRepository<Post, ResponseViewModel, SqliteDbContext>(context), IPostRepository
+public class PostRepository(PostgresDbContext context) :
+    RelationalRepository<Post, ResponseViewModel, PostgresDbContext>(context), IPostRepository
 {
     public Task<bool> AnyAsync(string name, Post.ETipo tipo, CancellationToken cancellationToken)
     {

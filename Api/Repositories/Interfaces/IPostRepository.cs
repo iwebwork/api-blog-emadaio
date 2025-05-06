@@ -5,7 +5,7 @@ using Infraestrutura.Repository.Interfaces;
 
 namespace Api.Repositories.Interfaces;
 
-public interface IPostRepository : IRelationalRepository<Post, ResponseViewModel, SqliteDbContext>
+public interface IPostRepository : IRelationalRepository<Post, ResponseViewModel, PostgresDbContext>
 {
     /// <summary>
     /// Retorna se entidade existe de acordo com o nome e tipo informado.

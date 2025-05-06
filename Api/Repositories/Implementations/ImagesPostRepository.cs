@@ -6,7 +6,7 @@ using Infraestrutura.ViewModels;
 
 namespace Api.Repositories.Implementations;
 
-public class ImagesPostRepository(SqliteDbContext context) :
-    RelationalRepository<ImagesPost, BaseViewModel, SqliteDbContext>(context), IImagesPostRepository
+public class ImagesPostRepository(PostgresDbContext context) :
+    RelationalRepository<ImagesPost, BaseViewModel, PostgresDbContext>(context), IImagesPostRepository
 {
 }

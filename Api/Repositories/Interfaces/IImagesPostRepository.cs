@@ -5,6 +5,6 @@ using Infraestrutura.ViewModels;
 
 namespace Api.Repositories.Interfaces;
 
-public interface IImagesPostRepository : IRelationalRepository<ImagesPost, BaseViewModel, SqliteDbContext>
+public interface IImagesPostRepository : IRelationalRepository<ImagesPost, BaseViewModel, PostgresDbContext>
 {
 }

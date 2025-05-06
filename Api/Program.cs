@@ -1,16 +1,14 @@
 using Api.Configurations;
 using Api.Contexts;
-using Infraestrutura.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
-
 builder.Services
-    .AddSqlite<SqliteDbContext>()
+    .AddDbContext<PostgresDbContext>()
     .AddDependencyInjection()
-    .AddDbContext<SqliteDbContext>()
     .AddCors(options =>
     {
         options.AddDefaultPolicy(builder =>
@@ -25,8 +23,26 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+// Aplica as migrations ao iniciar a aplicação
+var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
 
+try
+{
+    var context = services.GetRequiredService<PostgresDbContext>();
+    context.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
+                                // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
+    Console.WriteLine("Migrations aplicadas com sucesso!");
+}
+catch (Exception ex)
+{
+    // Opcional: Adicione um log de erro mais detalhado aqui
+    Console.WriteLine($"Ocorreu um erro ao aplicar as migrations: {ex.Message}");
+    // Considere interromper a inicialização da aplicação em caso de falha crítica
+    // throw;
+}
+
+app.UseHttpsRedirection();
 
 app.UseCors();
 
