@@ -4,11 +4,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libgdiplus libc6-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 EXPOSE 8080
 
