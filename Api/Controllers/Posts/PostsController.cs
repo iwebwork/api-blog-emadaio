@@ -1,6 +1,7 @@
 ﻿using Api.Models;
 using Api.Repositories.Interfaces;
 using Infraestrutura.Controllers;
+using Infraestrutura.Selenium;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Posts;
@@ -115,12 +116,10 @@ public class PostsController(IResponseControler responseControler,
     }
 
     [HttpGet, Route("getAnuncio")]
-    public string GetAnuncio()
+    public async Task<string> GetAnuncio()
     {
-        //var teste4 = new SeleniumBase();000000
-        //var selenium = new SeleniumBase();
-        //return File(imageBytes, mimeType);
-        return "Noivo";
+        var selenium = new SeleniumBase();
+        return await selenium.Navigate();
     }
 
     private static byte[] GetImagemFromBase64(string imageBase64)
