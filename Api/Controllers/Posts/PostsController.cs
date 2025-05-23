@@ -114,6 +114,15 @@ public class PostsController(IResponseControler responseControler,
         }
     }
 
+    [HttpGet, Route("getAnuncio")]
+    public string GetAnuncio()
+    {
+        //var teste4 = new SeleniumBase();
+        //var selenium = new SeleniumBase();
+        //return File(imageBytes, mimeType);
+        return "Noivo";
+    }
+
     private static byte[] GetImagemFromBase64(string imageBase64)
     {
         string base64DataWithPrefix = imageBase64;

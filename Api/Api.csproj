@@ -19,7 +19,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.32.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\csharpinfraestrutura\Infraestrutura\Infraestrutura.csproj" />
   </ItemGroup>
 
   <ItemGroup>
