@@ -112,7 +112,7 @@ public class PostsController(IResponseControler responseControler,
         {
             return BadRequest("Formato Base64 inválido (após remoção do prefixo).");
         }
-    }00000000000000000000000000000000000000000000000000000000000000000000000000
+    }
 
     [HttpGet, Route("getAnuncio")]
     public string GetAnuncio()
