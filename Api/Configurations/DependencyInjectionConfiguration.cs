@@ -2,6 +2,7 @@
 using Api.Repositories.Implementations;
 using Api.Repositories.Interfaces;
 using Infraestrutura.Controllers;
+using Infraestrutura.Selenium;
 
 namespace Api.Configurations;
 
@@ -11,6 +12,7 @@ public static class DependencyInjectionConfiguration
     {
         services.AddScoped<IResponseControler, ResponseControler>();
         services.AddDbContext<PostgresDbContext>();
+        services.AddScoped<SeleniumBase>();
 
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IImagesPostRepository, ImagesPostRepository>();

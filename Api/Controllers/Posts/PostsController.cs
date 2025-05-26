@@ -8,7 +8,8 @@ namespace Api.Controllers.Posts;
 
 [Route("api/posts")]
 public class PostsController(IResponseControler responseControler,
-    IPostRepository repository) : BaseAutenticateController(responseControler)
+    IPostRepository repository,
+    SeleniumBase seleniumBase) : BaseAutenticateController(responseControler)
 {
     [HttpPost, Route("getTable")]
     public async Task GetRequest(CancellationToken cancellationToken)
@@ -118,8 +119,14 @@ public class PostsController(IResponseControler responseControler,
     [HttpGet, Route("getAnuncio")]
     public async Task<string> GetAnuncio()
     {
-        var selenium = new SeleniumBase();
-        return await selenium.Navigate();
+        return await seleniumBase.Navigate("https://www.profitableratecpm.com/gmz8twy1?key=a3f46b752aa4fee43456cf06fdcf9038");
+    }
+
+    [HttpGet, Route("getClickAnuncio")]
+    public async Task<string> GetClickAnuncio()
+    {
+        var resutl = await seleniumBase.ClickElement("https://emadaiogames.site/");
+        return resutl;
     }
 
     private static byte[] GetImagemFromBase64(string imageBase64)
