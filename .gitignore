@@ -11,9 +11,9 @@
 *.db-shm
 *.db-wal
 /Api/.vs/ProjectEvaluation
+/Api/csharpinfraestrutura
 /Api/exe.txt
 /.vs/VSWorkspaceState.json
 /.vs/ApiBlogEmadaio/v17/.wsuo
 /.vs/ApiBlogEmadaio/v17/DocumentLayout.json
 /.vs/ApiBlogEmadaio/v17/DocumentLayout.backup.json
-/Api/csharpinfraestrutura
