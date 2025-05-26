@@ -8,7 +8,6 @@
 /Api/obj
 /Api/.vs/ApiBlogEmadaio
 /Api/BlogEmadaio.db
-/Api/csharpinfraestrutura
 *.db-shm
 *.db-wal
 /Api/.vs/ProjectEvaluation
