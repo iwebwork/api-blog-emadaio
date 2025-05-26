@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+var env = builder.Environment;
 
 // Add services to the container.
 builder.Services
@@ -29,10 +30,13 @@ var services = scope.ServiceProvider;
 
 try
 {
-    var context = services.GetRequiredService<PostgresDbContext>();
-    context.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
-                                // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
-    Console.WriteLine("Migrations aplicadas com sucesso!");
+    if (env.IsProduction())
+    {
+        var context = services.GetRequiredService<PostgresDbContext>();
+        context.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
+                                    // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
+        Console.WriteLine("Migrations aplicadas com sucesso!");
+    }
 }
 catch (Exception ex)
 {
