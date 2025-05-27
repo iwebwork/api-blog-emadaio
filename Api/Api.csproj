@@ -25,9 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Infraestrutura">
-      <HintPath>..\..\csharpinfraestrutura\Infraestrutura\bin\Debug\net8.0\Infraestrutura.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\csharpinfraestrutura\Infraestrutura\Infraestrutura.csproj" />
   </ItemGroup>
 
 </Project>
