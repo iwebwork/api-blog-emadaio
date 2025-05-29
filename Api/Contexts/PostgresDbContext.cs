@@ -1,4 +1,4 @@
-﻿using Api.Configurations;
+﻿using Api.Contexts.Configurations;
 using Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +10,7 @@ public class PostgresDbContext(IConfiguration configuration, DbContextOptions<Po
 
     public DbSet<Post> Posts { get; set; }
     public DbSet<ImagesPost> ImagesPost { get; set; }
+    public DbSet<Anuncio> Anuncio { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -23,5 +24,6 @@ public class PostgresDbContext(IConfiguration configuration, DbContextOptions<Po
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new ImagesPostConfiguration());
+        modelBuilder.ApplyConfiguration(new AnuncioConfiguration());
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers.Posts;
 
 [Route("api/posts")]
-public class PostsController(IResponseControler responseControler,
+public class HomeController(IResponseControler responseControler,
     IPostRepository repository,
     SeleniumBase seleniumBase) : BaseAutenticateController(responseControler)
 {

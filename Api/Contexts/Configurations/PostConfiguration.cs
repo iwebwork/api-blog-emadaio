@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Api.Configurations;
+namespace Api.Contexts.Configurations;
 
 public class PostConfiguration : IEntityTypeConfiguration<Post>
 {

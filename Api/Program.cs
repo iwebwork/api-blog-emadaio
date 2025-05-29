@@ -30,13 +30,10 @@ var services = scope.ServiceProvider;
 
 try
 {
-    if (env.IsProduction())
-    {
-        var context = services.GetRequiredService<PostgresDbContext>();
-        context.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
-                                    // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
-        Console.WriteLine("Migrations aplicadas com sucesso!");
-    }
+    var context = services.GetRequiredService<PostgresDbContext>();
+    context.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
+                                // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
+    Console.WriteLine("Migrations aplicadas com sucesso!");
 }
 catch (Exception ex)
 {

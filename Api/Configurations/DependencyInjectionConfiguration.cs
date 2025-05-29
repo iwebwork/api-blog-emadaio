@@ -14,6 +14,7 @@ public static class DependencyInjectionConfiguration
         services.AddDbContext<PostgresDbContext>();
         services.AddScoped<SeleniumBase>();
 
+        services.AddScoped<IAnuncioRepository, AnuncioRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IImagesPostRepository, ImagesPostRepository>();
         return services;
