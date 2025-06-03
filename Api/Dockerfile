@@ -21,10 +21,10 @@ ARG GITLAB_PAT
 RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
 
 # Faz o clone do repositório da infraestrutura
-RUN git clone https://gitlab.com/iwebwork/csharpinfraestrutura.git csharpinfraestrutura
+RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git csharpinfraestrutura 
 
 # Faz o clone do repositório do projeto
-RUN git clone https://github.com/iwebwork/ApiBlogEmadaio.git ApiBlogEmadaio
+RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git ApiBlogEmadaio
 
 # Limpa a configuração do Git para não deixar o token na imagem final
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
@@ -58,7 +58,7 @@ COPY . .
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
