@@ -45,16 +45,11 @@ COPY --from=base /app/csharpinfraestrutura ./csharpinfraestrutura
 COPY --from=base /app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 # Altera o WORKDIR para o diretório do projeto API principal.
-WORKDIR /src/ApiBlogEmadaio/Api
-
-# Copia todo o restante do código-fonte para o WORKDIR /src.
-# Isso deve ser feito após o restore para otimizar o cache.
-COPY . .
-
+WORKDIR /src/ApiBlogEmadaio
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
-RUN dotnet restore "./Api.csproj"
+RUN dotnet restore
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
