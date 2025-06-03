@@ -39,9 +39,10 @@ ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
 
-# Copia os arquivos de projeto (.csproj) da API e da biblioteca.
-# A estrutura de pastas relativa ao Dockerfile precisa ser mantida dentro do contêiner.
+# Copia a estrutura de pastas do projeto de infraestrutura
 COPY --from=base /app/csharpinfraestrutura ./csharpinfraestrutura
+
+# Copia a estrutura de pastas do projeto principal
 COPY --from=base /app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 # Altera o WORKDIR para o diretório do projeto API principal.
@@ -53,14 +54,14 @@ RUN dotnet restore
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 
 # O WORKDIR permanece /src/ApiBlogEmadaio/Api do estágio 'build'.
-RUN dotnet publish "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
