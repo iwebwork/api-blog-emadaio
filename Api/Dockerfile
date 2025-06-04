@@ -1,5 +1,5 @@
 #Estágio 1 - 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS git_clone
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
 RUN apt-get update && \
@@ -8,7 +8,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
@@ -27,6 +26,8 @@ RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
 # Estágio 2 - 
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
@@ -36,10 +37,10 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY app/csharpinfraestrutura/csharpinfraestrutura ./csharpinfraestrutura
+COPY --from=git_clone app/csharpinfraestrutura/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY app/ApiBlogEmadaio/ApiBlogEmadaio ./ApiBlogEmadaio
+COPY --from=git_clone app/ApiBlogEmadaio/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
 WORKDIR /src/ApiBlogEmadaio/Api
@@ -50,17 +51,17 @@ RUN dotnet restore "Api.csproj"
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "./ApiBlogEmadaio/Api/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 
 # O WORKDIR permanece /src/ApiBlogEmadaio/Api do estágio 'build'.
-RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM build AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 EXPOSE 8080
 EXPOSE 8081
 COPY --from=publish /app/publish .
