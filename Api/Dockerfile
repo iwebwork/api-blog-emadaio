@@ -17,10 +17,10 @@ ARG GITLAB_PAT
 RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
 
 # Faz o clone do repositório da infraestrutura
-RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git csharpinfraestrutura 
+RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git ./csharpinfraestrutura 
 
 # Faz o clone do repositório do projeto
-RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git ApiBlogEmadaio
+RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git ./ApiBlogEmadaio
 
 # Limpa a configuração do Git para não deixar o token na imagem final
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
@@ -35,10 +35,10 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY --from=build app/csharpinfraestrutura .
+COPY --from=build app/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY --from=build app/ApiBlogEmadaio .
+COPY --from=build app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
 WORKDIR /src
