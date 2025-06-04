@@ -7,8 +7,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN dotnet dev-certs https --trust
-
 WORKDIR /app
 
 # Define a variável de ambiente para que a aplicação escute APENAS em HTTP.
