@@ -61,6 +61,8 @@ WORKDIR /src/ApiBlogEmadaio/Api
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
 RUN dotnet restore "Api.csproj"
 
+COPY . .
+
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
 RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -73,7 +75,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM build AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
 COPY --from=publish /app/publish .
