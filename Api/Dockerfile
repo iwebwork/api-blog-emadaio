@@ -1,5 +1,5 @@
 #Estágio 1 - 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS git_clone
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS git_clone
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
 RUN apt-get update && \
@@ -8,6 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
@@ -31,7 +33,7 @@ RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
     ls -l /app && \
     echo "---------------------------------------------------------"
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Estágio 2 - 
 # This stage is used to build the service project
@@ -74,7 +76,5 @@ RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 FROM build AS final
 WORKDIR /app
 
-#EXPOSE 8080
-#EXPOSE 8081
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
