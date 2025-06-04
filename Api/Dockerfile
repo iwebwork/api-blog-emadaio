@@ -37,13 +37,13 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY --from=git_clone app/csharpinfraestrutura/csharpinfraestrutura ./csharpinfraestrutura
+COPY --from=git_clone app/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
 COPY --from=git_clone app/ApiBlogEmadaio/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
-WORKDIR /src/ApiBlogEmadaio/Api
+WORKDIR /src/ApiBlogEmadaio/ApiBlogEmadaio/Api
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
