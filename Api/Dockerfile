@@ -40,7 +40,7 @@ WORKDIR /src
 COPY --from=git_clone app/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY --from=git_clone app/ApiBlogEmadaio/ApiBlogEmadaio ./ApiBlogEmadaio
+COPY --from=git_clone app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
 WORKDIR /src/ApiBlogEmadaio/ApiBlogEmadaio/Api
