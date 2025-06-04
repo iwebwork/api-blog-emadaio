@@ -7,9 +7,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
@@ -32,18 +30,9 @@ RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".i
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
 
-# Define o WORKDIR para a raiz onde os repositórios clonados serão copiados.
-# Isso torna os caminhos consistentes.
-WORKDIR /src
-
-# Copia a estrutura de pastas do projeto de infraestrutura
-COPY app/csharpinfraestrutura ./csharpinfraestrutura
-
-# Copia a estrutura de pastas do projeto principal
-COPY app/ApiBlogEmadaio ./ApiBlogEmadaio
-
 #Estágio 3 - 
-WORKDIR /src/ApiBlogEmadaio/Api .
+# Isso torna os caminhos consistentes.
+WORKDIR /src/ApiBlogEmadaio/Api
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
@@ -51,7 +40,7 @@ RUN dotnet restore "Api.csproj"
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "./ApiBlogEmadaio/Api/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
