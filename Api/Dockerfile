@@ -9,6 +9,8 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+RUN echo "--- Entrei na pasta app: ---"
+
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
 
@@ -26,7 +28,7 @@ RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
-# --- DEBUGA: LISTA PASTAS APÓS O CLONE NO ESTÁGIO git_clone ---
+# --- DEBUGA: LISTA PASTAS ---
 RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
     ls -l /app && \
     echo "---------------------------------------------------------"
@@ -47,7 +49,7 @@ COPY --from=git_clone app/csharpinfraestrutura ./csharpinfraestrutura
 # Copia a estrutura de pastas do projeto principal
 COPY --from=git_clone app/ApiBlogEmadaio ./ApiBlogEmadaio
 
-# --- DEBUGA: LISTA PASTAS APÓS O CLONE NO ESTÁGIO git_clone ---
+# --- DEBUGA: LISTA PASTAS
 RUN echo "--- Conteúdo de /src após copiar do app: ---" && \
     ls -l /src && \
     echo "---------------------------------------------------------"
