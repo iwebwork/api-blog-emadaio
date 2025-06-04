@@ -28,24 +28,22 @@ RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".i
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
 
+# Altera o WORKDIR para o diretório do projeto API principal.
 WORKDIR /src
 
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY --from=build /app/csharpinfraestrutura ./csharpinfraestrutura
+COPY --from=build /csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY --from=build /app/ApiBlogEmadaio ./ApiBlogEmadaio
-
-# Altera o WORKDIR para o diretório do projeto API principal.
-WORKDIR /src/ApiBlogEmadaio
+COPY --from=build /ApiBlogEmadaio ./ApiBlogEmadaio
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
-RUN dotnet restore "./ApiBlogEmadaio/Api.csproj"
+RUN dotnet restore "./ApiBlogEmadaio/Api/Api.csproj"
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "./ApiBlogEmadaio/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./ApiBlogEmadaio/Api/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
