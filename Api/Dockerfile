@@ -31,7 +31,7 @@ RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
     ls -l /app && \
     echo "---------------------------------------------------------"
 
-FROM git_clone AS build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS build
 
 # Estágio 2 - 
 # This stage is used to build the service project
@@ -71,7 +71,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM build AS final
 WORKDIR /app
 
 #EXPOSE 8080
