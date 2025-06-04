@@ -27,7 +27,7 @@ RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf
 RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
 
 # Faz o clone do repositório do projeto
-#RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
+RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 
 # Limpa a configuração do Git para não deixar o token na imagem final
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
