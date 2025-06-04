@@ -1,6 +1,5 @@
 #Estágio 1 - 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS git_clone
-ENV TZ=America/Sao_Paulo
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS git_clone
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
 RUN apt-get update && \
@@ -32,7 +31,7 @@ RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
     ls -l /app && \
     echo "---------------------------------------------------------"
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM git_clone AS build
 
 # Estágio 2 - 
 # This stage is used to build the service project
