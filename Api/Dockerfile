@@ -1,7 +1,7 @@
-#Est·gio 1 - 
+Ôªø#Est√°gio 1 - 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS git_clone
 
-# Instala o Git na imagem (se n„o estiver presente na imagem base)
+# Instala o Git na imagem (se n√£o estiver presente na imagem base)
 RUN apt-get update && \
     apt-get install -y git && \
     apt-get clean && \
@@ -9,8 +9,8 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Define a vari·vel de ambiente para que a aplicaÁ„o escute APENAS em HTTP.
-# Isso sobrescreve qualquer configuraÁ„o de HTTPS de launchSettings.json no contexto do Docker.
+# Define a vari√°vel de ambiente para que a aplica√ß√£o escute APENAS em HTTP.
+# Isso sobrescreve qualquer configura√ß√£o de HTTPS de launchSettings.json no contexto do Docker.
 ENV ASPNETCORE_URLS="http://+:8080"
 
 #EXPOSE 8080
@@ -19,32 +19,32 @@ ENV ASPNETCORE_URLS="http://+:8080"
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
 
-# Configura o Git para usar o token temporariamente para o domÌnio do GitLab
+# Configura o Git para usar o token temporariamente para o dom√≠nio do GitLab
 # Note: O GitLab prefere 'oauth2' como username para PATs.
 RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
 
-# Faz o clone do repositÛrio da infraestrutura
+# Faz o clone do reposit√≥rio da infraestrutura
 RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
 
-# Faz o clone do repositÛrio do projeto
+# Faz o clone do reposit√≥rio do projeto
 RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 
-# Limpa a configuraÁ„o do Git para n„o deixar o token na imagem final
-# Embora ele j· esteja "baked" em uma camada anterior, esta È uma boa pr·tica.
+# Limpa a configura√ß√£o do Git para n√£o deixar o token na imagem final
+# Embora ele j√° esteja "baked" em uma camada anterior, esta √© uma boa pr√°tica.
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
 # --- DEBUGA: LISTA PASTAS ---
-RUN echo "--- Conte˙do de /app apÛs clones (est·gio git_clone): ---" && \
+RUN echo "--- Conte√∫do de /app ap√≥s clones (est√°gio git_clone): ---" && \
     ls -l /app && \
     echo "---------------------------------------------------------"
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# Est·gio 2 - 
+# Est√°gio 2 - 
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
 
-# Define o WORKDIR para a raiz onde os repositÛrios clonados ser„o copiados.
+# Define o WORKDIR para a raiz onde os reposit√≥rios clonados ser√£o copiados.
 # Isso torna os caminhos consistentes.
 WORKDIR /src
 
@@ -55,28 +55,28 @@ COPY --from=git_clone app/csharpinfraestrutura ./csharpinfraestrutura
 COPY --from=git_clone app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 # --- DEBUGA: LISTA PASTAS
-RUN echo "--- Conte˙do de /src apÛs copiar do app: ---" && \
+RUN echo "--- Conte√∫do de /src ap√≥s copiar do app: ---" && \
     ls -l /src && \
     echo "---------------------------------------------------------"
 
-#Est·gio 3 - 
+#Est√°gio 3 - 
 WORKDIR /src/ApiBlogEmadaio/Api
 
-# Restaura todos os pacotes NuGet e resolve referÍncias de projeto para a soluÁ„o principal.
-# Isso ir· restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construÌda para a API.
+# Restaura todos os pacotes NuGet e resolve refer√™ncias de projeto para a solu√ß√£o principal.
+# Isso ir√° restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja constru√≠da para a API.
 RUN dotnet restore "Api.csproj"
 
 COPY . .
 
-# ConstrÛi o projeto API principal.
-# O projeto da biblioteca ser· construÌdo automaticamente como uma dependÍncia.
+# Constr√≥i o projeto API principal.
+# O projeto da biblioteca ser√° constru√≠do automaticamente como uma depend√™ncia.
 RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 
-# O WORKDIR permanece /src/ApiBlogEmadaio/Api do est·gio 'build'.
+# O WORKDIR permanece /src/ApiBlogEmadaio/Api do est√°gio 'build'.
 RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
