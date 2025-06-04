@@ -28,9 +28,6 @@ RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".i
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
 
-# Altera o WORKDIR para o diretório do projeto API principal.
-WORKDIR /src
-
 # Copia a estrutura de pastas do projeto de infraestrutura
 COPY --from=build /csharpinfraestrutura ./csharpinfraestrutura
 
