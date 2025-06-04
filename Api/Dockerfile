@@ -1,5 +1,6 @@
 #Estágio 1 - 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS git_clone
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS git_clone
+ENV TZ=America/Sao_Paulo
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
 RUN apt-get update && \
@@ -8,8 +9,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
-RUN echo "--- Entrei na pasta app: ---"
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
