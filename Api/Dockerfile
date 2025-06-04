@@ -2,12 +2,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS git_clone
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
-#RUN apt-get update && \
-#    apt-get install -y git && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
+# Define a variável de ambiente para que a aplicação escute APENAS em HTTP.
+# Isso sobrescreve qualquer configuração de HTTPS de launchSettings.json no contexto do Docker.
+ENV ASPNETCORE_URLS="http://+:8080"
+
 EXPOSE 8080
 EXPOSE 8081
 
@@ -16,17 +21,17 @@ ARG GITLAB_PAT
 
 # Configura o Git para usar o token temporariamente para o domínio do GitLab
 # Note: O GitLab prefere 'oauth2' como username para PATs.
-#RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
+RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
 
 # Faz o clone do repositório da infraestrutura
-#RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
+RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
 
 # Faz o clone do repositório do projeto
-#RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
+RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 
 # Limpa a configuração do Git para não deixar o token na imagem final
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
-#RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
+RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
 # --- DEBUGA: LISTA PASTAS ---
 RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
