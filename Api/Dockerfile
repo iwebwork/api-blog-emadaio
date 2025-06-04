@@ -13,8 +13,8 @@ WORKDIR /app
 # Isso sobrescreve qualquer configuração de HTTPS de launchSettings.json no contexto do Docker.
 ENV ASPNETCORE_URLS="http://+:8080"
 
-EXPOSE 8080
-EXPOSE 8081
+#EXPOSE 8080
+#EXPOSE 8081
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
