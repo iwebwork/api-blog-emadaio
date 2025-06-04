@@ -7,7 +7,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /src
+WORKDIR /app
+
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
@@ -30,8 +31,17 @@ RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".i
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
 
-#Estágio 3 - 
+# Define o WORKDIR para a raiz onde os repositórios clonados serão copiados.
 # Isso torna os caminhos consistentes.
+WORKDIR /src
+
+# Copia a estrutura de pastas do projeto de infraestrutura
+COPY app/csharpinfraestrutura/csharpinfraestrutura ./csharpinfraestrutura
+
+# Copia a estrutura de pastas do projeto principal
+COPY app/ApiBlogEmadaio/ApiBlogEmadaio ./ApiBlogEmadaio
+
+#Estágio 3 - 
 WORKDIR /src/ApiBlogEmadaio/Api
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
@@ -40,7 +50,7 @@ RUN dotnet restore "Api.csproj"
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./ApiBlogEmadaio/Api/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
