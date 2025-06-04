@@ -1,5 +1,5 @@
 #Estágio 1 - 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS build
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
 RUN apt-get update && \
@@ -8,6 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
@@ -35,17 +37,17 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY --from=build app/csharpinfraestrutura ./csharpinfraestrutura
+COPY app/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY --from=build app/ApiBlogEmadaio ./ApiBlogEmadaio
+COPY app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
-WORKDIR /src
+WORKDIR /src/ApiBlogEmadaio/Api .
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
-RUN dotnet restore "./ApiBlogEmadaio/Api/Api.csproj"
+RUN dotnet restore "Api.csproj"
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
@@ -59,7 +61,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0 AS final
+FROM build AS final
 EXPOSE 8080
 EXPOSE 8081
 COPY --from=publish /app/publish .
