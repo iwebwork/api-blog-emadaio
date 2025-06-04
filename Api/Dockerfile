@@ -1,15 +1,10 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
 RUN apt-get update && \
     apt-get install -y git && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-USER $APP_UID
 
 WORKDIR /app
 
@@ -30,20 +25,16 @@ RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git Api
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
-EXPOSE 8080
-EXPOSE 8081
-
 # This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
 
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY --from=base /app/csharpinfraestrutura ./csharpinfraestrutura
+COPY --from=build /app/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY --from=base /app/ApiBlogEmadaio ./ApiBlogEmadaio
+COPY --from=build /app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 # Altera o WORKDIR para o diretório do projeto API principal.
 WORKDIR /src/ApiBlogEmadaio
@@ -64,7 +55,9 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/runtime-deps:8.0 AS final
 WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
