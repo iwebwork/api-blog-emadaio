@@ -43,7 +43,7 @@ COPY --from=git_clone app/csharpinfraestrutura ./csharpinfraestrutura
 COPY --from=git_clone app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
-WORKDIR /src/ApiBlogEmadaio/ApiBlogEmadaio/Api
+WORKDIR /src/ApiBlogEmadaio/Api
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
