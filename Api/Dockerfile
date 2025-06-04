@@ -62,7 +62,9 @@ RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
-EXPOSE 8080
-EXPOSE 8081
+WORKDIR /app
+
+#EXPOSE 8080
+#EXPOSE 8081
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
