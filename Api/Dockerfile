@@ -19,10 +19,10 @@ ARG GITLAB_PAT
 RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
 
 # Faz o clone do repositório da infraestrutura
-RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git ./csharpinfraestrutura 
+RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
 
 # Faz o clone do repositório do projeto
-RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git ./ApiBlogEmadaio
+RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 
 # Limpa a configuração do Git para não deixar o token na imagem final
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
@@ -43,7 +43,7 @@ COPY app/csharpinfraestrutura ./csharpinfraestrutura
 COPY app/ApiBlogEmadaio ./ApiBlogEmadaio
 
 #Estágio 3 - 
-WORKDIR /src/ApiBlogEmadaio/Api .
+WORKDIR /src/ApiBlogEmadaio/ApiBlogEmadaio/Api .
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
