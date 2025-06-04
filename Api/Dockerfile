@@ -34,7 +34,7 @@ RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
 # --- DEBUGA: LISTA PASTAS ---
-RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
+RUN echo "--- Conteúdo novo de /app após clones (estágio git_clone): ---" && \
     ls -l /app && \
     echo "---------------------------------------------------------"
 
