@@ -1,3 +1,4 @@
+#Estágio 1 - 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Instala o Git na imagem (se não estiver presente na imagem base)
@@ -25,14 +26,23 @@ RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git Api
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
+
+# Estágio 2 - 
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
 
+# Define o WORKDIR para a raiz onde os repositórios clonados serão copiados.
+# Isso torna os caminhos consistentes.
+WORKDIR /src
+
 # Copia a estrutura de pastas do projeto de infraestrutura
-COPY --from=build /csharpinfraestrutura ./csharpinfraestrutura
+COPY --from=build app/csharpinfraestrutura ./csharpinfraestrutura
 
 # Copia a estrutura de pastas do projeto principal
-COPY --from=build /ApiBlogEmadaio ./ApiBlogEmadaio
+COPY --from=build app/ApiBlogEmadaio ./ApiBlogEmadaio
+
+#Estágio 3 - 
+WORKDIR /src
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
