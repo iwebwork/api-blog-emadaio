@@ -43,8 +43,6 @@ catch (Exception ex)
     // throw;
 }
 
-app.UseHttpsRedirection();
-
 app.UseCors();
 
 app.UseAuthorization();
