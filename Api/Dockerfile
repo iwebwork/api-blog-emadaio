@@ -16,17 +16,17 @@ ARG GITLAB_PAT
 
 # Configura o Git para usar o token temporariamente para o domínio do GitLab
 # Note: O GitLab prefere 'oauth2' como username para PATs.
-RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
+#RUN git config --global url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf "https://gitlab.com/"
 
 # Faz o clone do repositório da infraestrutura
-RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
+#RUN git clone --branch master https://gitlab.com/iwebwork/csharpinfraestrutura.git
 
 # Faz o clone do repositório do projeto
-RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
+#RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git
 
 # Limpa a configuração do Git para não deixar o token na imagem final
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
-RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
+#RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
 # --- DEBUGA: LISTA PASTAS ---
 RUN echo "--- Conteúdo de /app após clones (estágio git_clone): ---" && \
