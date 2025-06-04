@@ -26,7 +26,6 @@ RUN git clone --branch master https://github.com/iwebwork/ApiBlogEmadaio.git Api
 # Embora ele já esteja "baked" em uma camada anterior, esta é uma boa prática.
 RUN git config --global --unset url."https://oauth2:${GITLAB_PAT}@gitlab.com/".insteadOf || true
 
-
 # Estágio 2 - 
 # This stage is used to build the service project
 ARG BUILD_CONFIGURATION=Release
@@ -46,11 +45,11 @@ WORKDIR /src
 
 # Restaura todos os pacotes NuGet e resolve referências de projeto para a solução principal.
 # Isso irá restaurar pacotes para AMBOS os projetos e garantir que a infraestrutura seja construída para a API.
-RUN dotnet restore "./ApiBlogEmadaio/Api/Api.csproj"
+RUN dotnet restore "./ApiBlogEmadaio/ApiBlogEmadaio/Api/Api.csproj"
 
 # Constrói o projeto API principal.
 # O projeto da biblioteca será construído automaticamente como uma dependência.
-RUN dotnet build "./ApiBlogEmadaio/Api/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./ApiBlogEmadaio/ApiBlogEmadaio/Api/Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
