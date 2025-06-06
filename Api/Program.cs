@@ -22,12 +22,6 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddControllers();
 
-// Configura o Kestrel para escutar apenas em HTTP na porta 8080
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(8080); // Escuta em todas as interfaces na porta 8080 (HTTP)
-});
-
 var app = builder.Build();
 
 // Aplica as migrations ao iniciar a aplicação
