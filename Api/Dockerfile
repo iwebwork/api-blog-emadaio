@@ -9,12 +9,8 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Define a variável de ambiente para que a aplicação escute APENAS em HTTP.
-# Isso sobrescreve qualquer configuração de HTTPS de launchSettings.json no contexto do Docker.
-ENV ASPNETCORE_URLS="http://+:8080"
-
-#EXPOSE 8080
-#EXPOSE 8081
+EXPOSE 8080
+EXPOSE 8081
 
 # Declare um argumento de build para o token
 ARG GITLAB_PAT
@@ -82,8 +78,6 @@ RUN dotnet publish "Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-
-EXPOSE 8080 # Expõe a porta 8080 (HTTP)
 
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
