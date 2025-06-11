@@ -17,3 +17,5 @@
 /.vs/ApiBlogEmadaio/v17/.wsuo
 /.vs/ApiBlogEmadaio/v17/DocumentLayout.json
 /.vs/ApiBlogEmadaio/v17/DocumentLayout.backup.json
+/Api/appsettings.json
+/Api/appsettings.Development.json
