@@ -2,15 +2,8 @@
 
 namespace Api.Models;
 
-public class Post(string name, string title, DateTime date, string? image, Post.ETipo tipo, string corpo, Post.ELiberado liberado) : BaseModel()
+public class Post(string name, string title, DateTime date, string? image, TipoPost tipoPost, string corpo, Post.ELiberado liberado) : BaseModel()
 {
-    public enum ETipo : short
-    {
-        Noticias = 1,
-        Reviews = 2,
-        Curiosidades = 3
-    }
-
     public enum ELiberado : short
     {
         Sim = 1,
@@ -21,23 +14,28 @@ public class Post(string name, string title, DateTime date, string? image, Post.
     public string Title { get; private set; } = title;
     public DateTime Date { get; private set; } = date;
     public string? Image { get; private set; } = image;
-    public ETipo Tipo { get; private set; } = tipo;
+    public Guid TipoPostId { get; private set; } = tipoPost.Id;
+    public virtual TipoPost TipoPost { get; private set; } = tipoPost;
     public string Corpo { get; private set; } = corpo;
     public ELiberado Liberado { get; private set; } = liberado;
 
-    public void Update(string name, string title, DateTime date, string? image, ETipo tipo, string corpo, ELiberado liberado)
+    public void Update(string name, string title, DateTime date, string? image, TipoPost tipoPost, string corpo, ELiberado liberado)
     {
+        base.Update();
+
         Name = name;
         Title = title;
         Date = date;
         Image = image;
-        Tipo = tipo;
+        TipoPost = tipoPost;
+        TipoPostId = tipoPost.Id;
         Corpo = corpo;
         Liberado = liberado;
     }
 
     public void LiberarPost()
     {
+        base.Update();
         Liberado = ELiberado.Sim;
     }
 }
