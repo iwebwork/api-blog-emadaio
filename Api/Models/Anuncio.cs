@@ -23,6 +23,8 @@ public class Anuncio(string name, Anuncio.ETipo tipo, string corpo, Anuncio.ELib
 
     public void Update(string name, ETipo tipo, string corpo, ELiberado liberado)
     {
+        base.Update();
+
         Name = name;
         Tipo = tipo;
         Corpo = corpo;
