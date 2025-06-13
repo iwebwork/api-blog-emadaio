@@ -11,6 +11,7 @@ public class PostgresDbContext(IConfiguration configuration, DbContextOptions<Po
     public DbSet<Post> Posts { get; set; }
     public DbSet<ImagesPost> ImagesPost { get; set; }
     public DbSet<Anuncio> Anuncio { get; set; }
+    public DbSet<Usuario> Usuario { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -25,5 +26,6 @@ public class PostgresDbContext(IConfiguration configuration, DbContextOptions<Po
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new ImagesPostConfiguration());
         modelBuilder.ApplyConfiguration(new AnuncioConfiguration());
+        modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
     }
 }
