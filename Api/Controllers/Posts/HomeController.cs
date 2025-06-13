@@ -1,7 +1,6 @@
 ﻿using Api.Models;
 using Api.Repositories.Interfaces;
 using Infraestrutura.Controllers;
-using Infraestrutura.Selenium;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Posts;
@@ -9,7 +8,7 @@ namespace Api.Controllers.Posts;
 [Route("api/posts")]
 public class HomeController(IResponseControler responseControler,
     IPostRepository repository,
-    SeleniumBase seleniumBase) : BaseAutenticateController(responseControler)
+    ITipoPostRepository tipoPostRepository) : BaseAutenticateController(responseControler)
 {
     [HttpPost, Route("getTable")]
     public async Task GetRequest(CancellationToken cancellationToken)
@@ -28,9 +27,17 @@ public class HomeController(IResponseControler responseControler,
     [HttpPost, Route("insert")]
     public async Task InsertAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
-        if (await repository.AnyAsync(requestViewModel.Name, requestViewModel.Tipo, cancellationToken))
+        if (await repository.AnyAsync(requestViewModel.Name, requestViewModel.TipoPostId, cancellationToken))
         {
             responseControler.AddMessageErro("Existe um post com o mesmo nome e tipo cadastrado!");
+            return;
+        }
+
+        var tipoPost = await tipoPostRepository.GetAsync(requestViewModel.TipoPostId, cancellationToken);
+
+        if (tipoPost == null)
+        {
+            responseControler.AddMessageErro("O tipo de post informado não existe!");
             return;
         }
 
@@ -38,7 +45,7 @@ public class HomeController(IResponseControler responseControler,
             title: requestViewModel.Title,
             date: requestViewModel.Date,
             image: requestViewModel.Image,
-            tipo: requestViewModel.Tipo,
+            tipoPost: tipoPost,
             corpo: requestViewModel.Corpo,
             liberado: requestViewModel.Liberado);
 
@@ -58,11 +65,19 @@ public class HomeController(IResponseControler responseControler,
             return;
         }
 
+        var tipoPost = await tipoPostRepository.GetAsync(requestViewModel.TipoPostId, cancellationToken);
+
+        if (tipoPost == null)
+        {
+            responseControler.AddMessageErro("O tipo de post informado não existe!");
+            return;
+        }
+
         model.Update(name: requestViewModel.Name,
             title: requestViewModel.Title,
             date: requestViewModel.Date,
             image: requestViewModel.Image,
-            tipo: requestViewModel.Tipo,
+            tipoPost: tipoPost,
             corpo: requestViewModel.Corpo,
             liberado: requestViewModel.Liberado);
 
@@ -114,19 +129,6 @@ public class HomeController(IResponseControler responseControler,
         {
             return BadRequest("Formato Base64 inválido (após remoção do prefixo).");
         }
-    }
-
-    [HttpGet, Route("getAnuncio")]
-    public async Task<string> GetAnuncio()
-    {
-        return await seleniumBase.Navigate("https://www.profitableratecpm.com/gmz8twy1?key=a3f46b752aa4fee43456cf06fdcf9038");
-    }
-
-    [HttpGet, Route("getClickAnuncio")]
-    public async Task<string> GetClickAnuncio()
-    {
-        var resutl = await seleniumBase.ClickElement("https://emadaiogames.site/");
-        return resutl;
     }
 
     private static byte[] GetImagemFromBase64(string imageBase64)

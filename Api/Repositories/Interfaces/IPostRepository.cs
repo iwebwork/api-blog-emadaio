@@ -10,5 +10,5 @@ public interface IPostRepository : IRelationalRepository<Post, ResponseViewModel
     /// <summary>
     /// Retorna se entidade existe de acordo com o nome e tipo informado.
     /// </summary>
-    Task<bool> AnyAsync(string name, Post.ETipo tipo, CancellationToken cancellationToken);
+    Task<bool> AnyAsync(string name, Guid tipoPostId, CancellationToken cancellationToken);
 }

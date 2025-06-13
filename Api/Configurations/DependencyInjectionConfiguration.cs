@@ -17,6 +17,9 @@ public static class DependencyInjectionConfiguration
         services.AddScoped<IAnuncioRepository, AnuncioRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<IImagesPostRepository, ImagesPostRepository>();
+        services.AddScoped<ITipoPostRepository, TipoPostRepository>();
+        services.AddScoped<IMenuRepository, MenuRepository>();
+
         return services;
     }
 }
