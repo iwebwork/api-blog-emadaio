@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Api.Contexts.Configurations;
 
-public class ImagesPostConfiguration : IEntityTypeConfiguration<Post>
+public class ImagesPostConfiguration : IEntityTypeConfiguration<ImagesPost>
 {
-    public void Configure(EntityTypeBuilder<Post> builder)
+    public void Configure(EntityTypeBuilder<ImagesPost> builder)
     {
-        builder.ToTable("Posts");
+        builder.ToTable("ImagesPosts");
 
     }
 }
