@@ -54,6 +54,15 @@ public class HomeController(IResponseControler responseControler,
         responseControler.AddMessageSuccesso("Menu inserido com sucesso!");
     }
 
+    [HttpPost, Route("carga")]
+    public async Task InsertListAsync(List<RequestViewModel> listRequestViewModel, CancellationToken cancellationToken)
+    {
+        foreach (var item in listRequestViewModel)
+        {
+            await InsertAsync(item, cancellationToken);
+        }
+    }
+
     [HttpPost, Route("edit")]
     public async Task EditAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
