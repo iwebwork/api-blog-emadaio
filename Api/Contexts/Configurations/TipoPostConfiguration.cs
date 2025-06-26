@@ -8,7 +8,6 @@ public class TipoPostConfiguration : IEntityTypeConfiguration<TipoPost>
 {
     public void Configure(EntityTypeBuilder<TipoPost> builder)
     {
-        builder.ToTable("TipoPosts");
-        builder.HasIndex(i => i.Nome).IsUnique();
+        builder.ToTable("TiposPost");
     }
 }

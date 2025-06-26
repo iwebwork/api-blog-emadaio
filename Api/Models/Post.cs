@@ -2,7 +2,7 @@
 
 namespace Api.Models;
 
-public class Post(string name, string title, DateTime date, string? image, TipoPost tipoPost, string corpo, Post.ELiberado liberado) : BaseModel()
+public class Post(string name, string title, DateTime date, string? image, Guid tipoPostId, string corpo, Post.ELiberado liberado) : BaseModel()
 {
     public enum ELiberado : short
     {
@@ -14,12 +14,12 @@ public class Post(string name, string title, DateTime date, string? image, TipoP
     public string Title { get; private set; } = title;
     public DateTime Date { get; private set; } = date;
     public string? Image { get; private set; } = image;
-    public Guid TipoPostId { get; private set; } = tipoPost.Id;
-    public virtual TipoPost TipoPost { get; private set; } = tipoPost;
+    public Guid TipoPostId { get; private set; } = tipoPostId;
+    public virtual TipoPost TipoPost { get; private set; }
     public string Corpo { get; private set; } = corpo;
     public ELiberado Liberado { get; private set; } = liberado;
 
-    public void Update(string name, string title, DateTime date, string? image, TipoPost tipoPost, string corpo, ELiberado liberado)
+    public void Update(string name, string title, DateTime date, string? image, Guid tipoPostId, string corpo, ELiberado liberado)
     {
         base.Update();
 
@@ -27,8 +27,7 @@ public class Post(string name, string title, DateTime date, string? image, TipoP
         Title = title;
         Date = date;
         Image = image;
-        TipoPost = tipoPost;
-        TipoPostId = tipoPost.Id;
+        TipoPostId = tipoPostId;
         Corpo = corpo;
         Liberado = liberado;
     }

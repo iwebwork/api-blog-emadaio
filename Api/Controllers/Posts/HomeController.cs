@@ -45,7 +45,7 @@ public class HomeController(IResponseControler responseControler,
             title: requestViewModel.Title,
             date: requestViewModel.Date,
             image: requestViewModel.Image,
-            tipoPost: tipoPost,
+            tipoPostId: tipoPost.Id,
             corpo: requestViewModel.Corpo,
             liberado: requestViewModel.Liberado);
 
@@ -77,7 +77,7 @@ public class HomeController(IResponseControler responseControler,
             title: requestViewModel.Title,
             date: requestViewModel.Date,
             image: requestViewModel.Image,
-            tipoPost: tipoPost,
+            tipoPostId: tipoPost.Id,
             corpo: requestViewModel.Corpo,
             liberado: requestViewModel.Liberado);
 

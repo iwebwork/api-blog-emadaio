@@ -8,11 +8,10 @@ public class PostgresDbContext(IConfiguration configuration, DbContextOptions<Po
 {
     private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-    public DbSet<Post> Posts { get; set; }
-    public DbSet<ImagesPost> ImagesPost { get; set; }
-    public DbSet<Anuncio> Anuncio { get; set; }
     public DbSet<TipoPost> TipoPost { get; set; }
+    public DbSet<Post> Post { get; set; }
     public DbSet<Menu> Menu { get; set; }
+    public DbSet<Anuncio> Anuncio { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -24,10 +23,9 @@ public class PostgresDbContext(IConfiguration configuration, DbContextOptions<Po
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfiguration(new PostConfiguration());
-        modelBuilder.ApplyConfiguration(new ImagesPostConfiguration());
-        modelBuilder.ApplyConfiguration(new AnuncioConfiguration());
         modelBuilder.ApplyConfiguration(new TipoPostConfiguration());
         modelBuilder.ApplyConfiguration(new MenuConfiguration());
+        modelBuilder.ApplyConfiguration(new PostConfiguration());
+        modelBuilder.ApplyConfiguration(new AnuncioConfiguration());
     }
 }

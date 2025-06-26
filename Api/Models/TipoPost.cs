@@ -2,7 +2,7 @@
 
 namespace Api.Models;
 
-public class TipoPost(string nome) : BaseModel
+public class TipoPost(string nome) : BaseModel()
 {
     public string Nome { get; private set; } = nome;
 

@@ -10,14 +10,14 @@ namespace Api.Repositories.Implementations;
 public class PostRepository(PostgresDbContext context) :
     RelationalRepository<Post, ResponseViewModel, PostgresDbContext>(context), IPostRepository
 {
-    public Task<bool> AnyAsync(string name, Guid tipoPostId, CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(string name, Guid tipoPostId, CancellationToken cancellationToken)
     {
-        return context.Posts.AnyAsync(s => s.Name == name && s.TipoPostId == tipoPostId, cancellationToken);
+        return await context.Post.AnyAsync(s => s.Name == name && s.TipoPostId == tipoPostId, cancellationToken);
     }
 
-    public override Task<List<ResponseViewModel>> GetTableAsync(CancellationToken cancellationToken)
+    public override async Task<List<ResponseViewModel>> GetTableAsync(CancellationToken cancellationToken)
     {
-        return context.Posts.Select(s => new ResponseViewModel
+        return await context.Post.Select(s => new ResponseViewModel
         {
             Id = s.Id,
             Corpo = s.Corpo,

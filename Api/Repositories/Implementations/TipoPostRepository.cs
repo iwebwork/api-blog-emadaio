@@ -10,8 +10,17 @@ namespace Api.Repositories.Implementations;
 public class TipoPostRepository(PostgresDbContext context) :
     RelationalRepository<TipoPost, ResponseViewModel, PostgresDbContext>(context), ITipoPostRepository
 {
-    public Task<bool> AnyAsync(string nome, CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(string nome, CancellationToken cancellationToken)
     {
-        return context.TipoPost.AnyAsync(s => s.Nome == nome, cancellationToken);
+        return await context.TipoPost.AnyAsync(s => s.Nome == nome, cancellationToken);
+    }
+
+    public override async Task<List<ResponseViewModel>> GetTableAsync(CancellationToken cancellationToken)
+    {
+        return await context.TipoPost.Select(s => new ResponseViewModel
+        {
+            Id = s.Id,
+            Nome = s.Nome
+        }).ToListAsync(cancellationToken);
     }
 }

@@ -31,7 +31,7 @@ public class HomeController(IResponseControler responseControler,
             path: requestViewModel.Path,
             cancellationToken: cancellationToken))
         {
-            responseControler.AddMessageErro("Existe um menu com o mesmo nome cadastrado!");
+            responseControler.AddMessageErro("Existe um menu com os mesmos: Label/Url/Path cadastrado!");
             return;
         }
 
@@ -39,19 +39,31 @@ public class HomeController(IResponseControler responseControler,
 
         if (tipoPost == null)
         {
-            responseControler.AddMessageErro("Existe um menu informado não foi encontrado!");
+            responseControler.AddMessageErro("O Tipo de Post informado não foi encontrado!");
             return;
         }
 
         Models.Menu model = new(label: requestViewModel.Label,
-            tipoPost: tipoPost,
+            tipoPostId: tipoPost.Id,
             url: requestViewModel.Url,
-            path: requestViewModel.Path,
-            liberado: requestViewModel.Liberado,
-            index: requestViewModel.Index);
+            path: requestViewModel.Path);
+
+        if (requestViewModel.Liberado == Models.Menu.ELiberado.Sim)
+        {
+            model.LiberarMenu();
+        }
+
+        if (requestViewModel.Index == Models.Menu.EIndex.Sim)
+        {
+            model.IsPrincipal();
+        }
 
         await repository.InsertAsync(model, cancellationToken);
-        responseControler.AddMessageSuccesso("Menu inserido com sucesso!");
+
+        if (responseControler.ResponseModel.IsValid)
+        {
+            responseControler.AddMessageSuccesso("Menu inserido com sucesso!");
+        }
     }
 
     [HttpPost, Route("carga")]
@@ -60,6 +72,16 @@ public class HomeController(IResponseControler responseControler,
         foreach (var item in listRequestViewModel)
         {
             await InsertAsync(item, cancellationToken);
+
+            if (!responseControler.ResponseModel.IsValid)
+            {
+                break;
+            }
+        }
+
+        if (responseControler.ResponseModel.IsValid)
+        {
+            responseControler.AddMessageSuccesso("Carga Menu finalizado!");
         }
     }
 
@@ -85,11 +107,24 @@ public class HomeController(IResponseControler responseControler,
         model.Update(label: requestViewModel.Label,
             tipoPost: tipoPost,
             url: requestViewModel.Url,
-            path: requestViewModel.Path,
-            liberado: requestViewModel.Liberado,
-            index: requestViewModel.Index);
+            path: requestViewModel.Path);
+
+        if (requestViewModel.Index == Models.Menu.EIndex.Sim)
+        {
+            model.IsPrincipal();
+        }
+
+        if (requestViewModel.Liberado == Models.Menu.ELiberado.Sim)
+        {
+            model.LiberarMenu();
+        }
 
         await repository.UpdateAsync(model, cancellationToken);
-        responseControler.AddMessageSuccesso("Menu editado com sucesso!");
+
+        if (responseControler.ResponseModel.IsValid)
+        {
+            responseControler.AddMessageSuccesso("Menu editado com sucesso!");
+        }
+
     }
 }

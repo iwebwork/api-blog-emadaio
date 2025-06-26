@@ -1,5 +1,5 @@
 ﻿using Api.Contexts;
-using Api.Controllers.TipoPost;
+using Api.Controllers.Menu;
 using Api.Models;
 using Infraestrutura.Repository.Interfaces;
 

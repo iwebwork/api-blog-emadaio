@@ -1,15 +1,13 @@
 ﻿using Api.Models;
 using Api.Repositories.Interfaces;
 using Infraestrutura.Controllers;
-using Infraestrutura.Selenium;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Anuncios;
 
 [Route("api/anuncios")]
 public class HomeController(IResponseControler responseControler,
-    IAnuncioRepository repository,
-    SeleniumBase seleniumBase) : BaseAutenticateController(responseControler)
+    IAnuncioRepository repository) : BaseAutenticateController(responseControler)
 {
     [HttpPost, Route("getTable")]
     public async Task GetRequest(CancellationToken cancellationToken)

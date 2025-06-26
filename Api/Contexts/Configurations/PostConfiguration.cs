@@ -9,5 +9,6 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
     public void Configure(EntityTypeBuilder<Post> builder)
     {
         builder.ToTable("Posts");
+        builder.Property(x => x.TipoPostId).IsRequired();
     }
 }
