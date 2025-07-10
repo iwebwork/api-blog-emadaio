@@ -35,7 +35,7 @@ public class MenuRepository(PostgresDbContext context,
         }).ToListAsync(cancellationToken);
     }
 
-    public override async Task InsertAsync(Menu model, CancellationToken cancellationToken)
+    public async Task InsertAsync(Menu model, CancellationToken cancellationToken)
     {
         await ValidateMenu(model, cancellationToken);
         responseControler.SetResponse();
@@ -45,9 +45,8 @@ public class MenuRepository(PostgresDbContext context,
             return;
         }
 
-        List<Menu> menus = [model];
 
-        await base.InsertAsync(menus, cancellationToken);
+        await base.InsertAsync(model, cancellationToken);
     }
 
     public override async Task UpdateAsync(Menu model, CancellationToken cancellationToken)
