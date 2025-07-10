@@ -35,38 +35,9 @@ public class MenuRepository(PostgresDbContext context,
         }).ToListAsync(cancellationToken);
     }
 
-    public async Task InsertAsync(Menu model, CancellationToken cancellationToken)
-    {
-        await ValidateMenu(model, cancellationToken);
-        responseControler.SetResponse();
-
-        if (!responseControler.ResponseModel.IsValid)
-        {
-            return;
-        }
-
-
-        await base.InsertAsync(model, cancellationToken);
-    }
-
-    public override async Task UpdateAsync(Menu model, CancellationToken cancellationToken)
-    {
-        await ValidateMenu(model, cancellationToken);
-
-        responseControler.SetResponse();
-
-        if (!responseControler.ResponseModel.IsValid)
-        {
-            return;
-        }
-
-        await base.UpdateAsync(model, cancellationToken);
-    }
-
     #region Metodos Privados
 
-    // TODO: Verificar se será necessario usar uma validationService
-    private async Task ValidateMenu(Menu model, CancellationToken cancellationToken)
+    public async Task ValidateMenu(Menu model, CancellationToken cancellationToken)
     {
         var menus = await context.Menu.ToListAsync(cancellationToken);
 
@@ -82,6 +53,13 @@ public class MenuRepository(PostgresDbContext context,
                           || model.Path.Contains(s.Path)) > 1)
         {
             responseControler.AddMessageErro("A Label, Url e Path do menu precisam ser unicas!");
+        }
+
+        responseControler.SetResponse();
+
+        if (!responseControler.ResponseModel.IsValid)
+        {
+            return;
         }
     }
 

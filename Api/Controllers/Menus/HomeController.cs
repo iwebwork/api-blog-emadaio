@@ -58,10 +58,11 @@ public class HomeController(IResponseControler responseControler,
             model.IsPrincipal();
         }
 
-        await repository.InsertAsync(model, cancellationToken);
+        await repository.ValidateMenu(model, cancellationToken);
 
         if (responseControler.ResponseModel.IsValid)
         {
+            await repository.InsertAsync(model, cancellationToken);
             responseControler.AddMessageSuccesso("Menu inserido com sucesso!");
         }
     }
@@ -119,10 +120,11 @@ public class HomeController(IResponseControler responseControler,
             model.LiberarMenu();
         }
 
-        await repository.UpdateAsync(model, cancellationToken);
+        await repository.ValidateMenu(model, cancellationToken);
 
         if (responseControler.ResponseModel.IsValid)
         {
+            await repository.UpdateAsync(model, cancellationToken);
             responseControler.AddMessageSuccesso("Menu editado com sucesso!");
         }
 

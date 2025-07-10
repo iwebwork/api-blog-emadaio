@@ -12,4 +12,7 @@ public interface IMenuRepository : IRelationalRepository<Menu, ResponseViewModel
     /// </summary>
 
     Task<bool> AnyAsync(string label, string url, string path, CancellationToken cancellationToken);
+
+    // TODO: Verificar se será necessario usar uma validationService
+    Task ValidateMenu(Menu model, CancellationToken cancellationToken);
 }
