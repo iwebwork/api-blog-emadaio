@@ -1,0 +1,18 @@
+﻿using Api.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Api.Contexts.Configurations;
+
+public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
+{
+    public void Configure(EntityTypeBuilder<Usuario> builder)
+    {
+        builder.ToTable("AspNetUsers");
+
+        builder.HasIndex(e => e.UserName)
+           .IsUnique();
+        builder.HasIndex(e => e.Email)
+            .IsUnique();
+    }
+}

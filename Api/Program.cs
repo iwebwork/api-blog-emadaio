@@ -9,6 +9,7 @@ var env = builder.Environment;
 // Add services to the container.
 builder.Services
     .AddDbContext<PostgresDbContext>()
+    .AddIdentity(configuration)
     .AddDependencyInjection()
     .AddCors(options =>
     {
@@ -30,15 +31,32 @@ var services = scope.ServiceProvider;
 
 try
 {
-    var context = services.GetRequiredService<PostgresDbContext>();
-    context.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
-                                // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
-    Console.WriteLine("Migrations aplicadas com sucesso!");
+    var contextPostgres = services.GetRequiredService<PostgresDbContext>();
+
+    contextPostgres.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
+                                        // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
+    Console.WriteLine("Migrations do PostgresDbContext aplicadas com sucesso!");
 }
 catch (Exception ex)
 {
     // Opcional: Adicione um log de erro mais detalhado aqui
-    Console.WriteLine($"Ocorreu um erro ao aplicar as migrations: {ex.Message}");
+    Console.WriteLine($"Ocorreu um erro ao aplicar as migrations do PostgresDbContext: {ex.Message}");
+    // Considere interromper a inicialização da aplicação em caso de falha crítica
+    // throw;
+}
+
+try
+{
+    var contextIdentity = services.GetRequiredService<AppIdentityDbContext>();
+
+    contextIdentity.Database.Migrate(); // Aplica todas as migrations pendentes ao banco de dados
+                                        // Opcional: Você pode adicionar um log aqui para indicar que a migração foi bem-sucedida
+    Console.WriteLine("Migrations do AppIdentityDbContext aplicadas com sucesso!");
+}
+catch (Exception ex)
+{
+    // Opcional: Adicione um log de erro mais detalhado aqui
+    Console.WriteLine($"Ocorreu um erro ao aplicar as migrations do AppIdentityDbContext: {ex.Message}");
     // Considere interromper a inicialização da aplicação em caso de falha crítica
     // throw;
 }
