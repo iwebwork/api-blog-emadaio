@@ -7,7 +7,7 @@ namespace Api.Controllers.TipoPost;
 
 [Route("api/tipoPost")]
 public class HomeController(IResponseControler responseControler,
-    ITipoPostRepository repository) : BaseAutenticateController(responseControler)
+    ITipoPostRepository repository) : BaseControllerAuthorize(responseControler)
 {
     [HttpPost, Route("getTable")]
     public async Task GetRequest(CancellationToken cancellationToken)

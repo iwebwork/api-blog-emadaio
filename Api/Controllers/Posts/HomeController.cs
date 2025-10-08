@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Posts;
 
+
 [Route("api/posts")]
 public class HomeController(IResponseControler responseControler,
     IPostRepository repository,
@@ -24,6 +25,51 @@ public class HomeController(IResponseControler responseControler,
         responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
     }
 
+    [HttpGet, Route("getImagem/{id}")]
+    public async Task<IActionResult> GetImagemAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var model = await repository.GetAsync(id, cancellationToken);
+
+        if (model == null)
+        {
+            responseControler.AddMessageErro("Post não foi encontrado!");
+            return NotFound();
+        }
+
+        if (string.IsNullOrEmpty(model.Image))
+        {
+            responseControler.AddMessageErro("Imagem não foi encontrada!");
+            return NotFound();
+        }
+
+        try
+        {
+            string mimeType = "image/png"; // "image/jpeg", "image/gif" e etc;
+            byte[] imageBytes = GetImagemFromBase64(model.Image);
+            return File(imageBytes, mimeType);
+        }
+        catch (FormatException)
+        {
+            return BadRequest("Formato Base64 inválido (após remoção do prefixo).");
+        }
+    }
+
+    private static byte[] GetImagemFromBase64(string imageBase64)
+    {
+        string base64DataWithPrefix = imageBase64;
+
+        // Extrai apenas os dados Base64
+        string base64DataOnly = base64DataWithPrefix.Substring(base64DataWithPrefix.IndexOf(',') + 1);
+
+        return Convert.FromBase64String(base64DataOnly);
+    }
+}
+
+[Route("api/posts")]
+public class HomeAuthController(IResponseControler responseControler,
+    IPostRepository repository,
+    ITipoPostRepository tipoPostRepository) : BaseWithAuthorizeController(responseControler)
+{
     [HttpPost, Route("insert")]
     public async Task InsertAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
@@ -100,44 +146,5 @@ public class HomeController(IResponseControler responseControler,
 
         await repository.UpdateAsync(model, cancellationToken);
         responseControler.AddMessageSuccesso("Post editado com sucesso!");
-    }
-
-    [HttpGet, Route("getImagem/{id}")]
-    public async Task<IActionResult> GetImagemAsync(Guid id, CancellationToken cancellationToken)
-    {
-        var model = await repository.GetAsync(id, cancellationToken);
-
-        if (model == null)
-        {
-            responseControler.AddMessageErro("Post não foi encontrado!");
-            return NotFound();
-        }
-
-        if (string.IsNullOrEmpty(model.Image))
-        {
-            responseControler.AddMessageErro("Imagem não foi encontrada!");
-            return NotFound();
-        }
-
-        try
-        {
-            string mimeType = "image/png"; // "image/jpeg", "image/gif" e etc;
-            byte[] imageBytes = GetImagemFromBase64(model.Image);
-            return File(imageBytes, mimeType);
-        }
-        catch (FormatException)
-        {
-            return BadRequest("Formato Base64 inválido (após remoção do prefixo).");
-        }
-    }
-
-    private static byte[] GetImagemFromBase64(string imageBase64)
-    {
-        string base64DataWithPrefix = imageBase64;
-
-        // Extrai apenas os dados Base64
-        string base64DataOnly = base64DataWithPrefix.Substring(base64DataWithPrefix.IndexOf(',') + 1);
-
-        return Convert.FromBase64String(base64DataOnly);
     }
 }

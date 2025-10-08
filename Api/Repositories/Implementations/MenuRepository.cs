@@ -12,6 +12,7 @@ public class MenuRepository(PostgresDbContext context,
     IResponseControler responseControler) :
     RelationalRepository<Menu, ResponseViewModel, PostgresDbContext>(context), IMenuRepository
 {
+
     public async Task<bool> AnyAsync(string label, string url, string path, CancellationToken cancellationToken)
     {
         return await context.Menu
@@ -34,6 +35,25 @@ public class MenuRepository(PostgresDbContext context,
             Index = s.Index
         }).ToListAsync(cancellationToken);
     }
+
+    public async Task<List<ResponseViewModel>> GetTableAsync(Menu.ELiberado liberado, CancellationToken cancellationToken)
+    {
+        return await context.Menu
+            .Where(w => w.Liberado == liberado)
+            .Select(s => new ResponseViewModel
+            {
+                Id = s.Id,
+                Label = s.Label,
+                TipoPostId = s.TipoPostId,
+                TipoPostNome = s.TipoPost.Nome,
+                Url = s.Url,
+                Path = s.Path,
+                Liberado = s.Liberado,
+                Index = s.Index
+            }).ToListAsync(cancellationToken);
+    }
+
+
 
     #region Metodos Privados
 
