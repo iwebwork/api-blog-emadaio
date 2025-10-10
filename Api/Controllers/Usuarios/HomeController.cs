@@ -107,6 +107,8 @@ public class HomeController(IResponseControler responseControler,
 
                 await _appIdentityDbContext.SaveChangesAsync(cancellationToken);
 
+                responseControler.IsAuthenticated = true;
+
                 responseControler.SetResponseData(new
                 {
                     Usuario = new
