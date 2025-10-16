@@ -31,4 +31,23 @@ public class PostRepository(PostgresDbContext context) :
             Title = s.Title
         }).ToListAsync(cancellationToken);
     }
+
+    public async Task<List<ResponseViewModel>> GetTableAsync(Guid tipoPostId, CancellationToken cancellationToken)
+    {
+        return await context.Post
+            .Where(w => w.TipoPost.Id == tipoPostId)
+            .Select(s => new ResponseViewModel
+            {
+                Id = s.Id,
+                Corpo = s.Corpo,
+                Date = s.Date,
+                Image = s.Image,
+                Liberado = s.Liberado,
+                LiberadoNome = s.Liberado.ToString(),
+                Name = s.Name,
+                TipoPostId = s.TipoPost.Id,
+                TipoNome = s.TipoPost.Nome,
+                Title = s.Title
+            }).ToListAsync(cancellationToken);
+    }
 }

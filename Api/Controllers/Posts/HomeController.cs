@@ -12,9 +12,9 @@ public class HomeController(IResponseControler responseControler,
     ITipoPostRepository tipoPostRepository) : BaseAutenticateController(responseControler)
 {
     [HttpPost, Route("getTable")]
-    public async Task GetRequest(CancellationToken cancellationToken)
+    public async Task GetRequest(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
-        responseControler.SetResponseData(await repository.GetTableAsync(cancellationToken));
+        responseControler.SetResponseData(await repository.GetTableAsync(requestViewModel.TipoPostId.Value, cancellationToken));
         responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
     }
 
@@ -73,13 +73,13 @@ public class HomeAuthController(IResponseControler responseControler,
     [HttpPost, Route("insert")]
     public async Task InsertAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
-        if (await repository.AnyAsync(requestViewModel.Name, requestViewModel.TipoPostId, cancellationToken))
+        if (await repository.AnyAsync(requestViewModel.Name, requestViewModel.TipoPostId.Value, cancellationToken))
         {
             responseControler.AddMessageErro("Existe um post com o mesmo nome e tipo cadastrado!");
             return;
         }
 
-        var tipoPost = await tipoPostRepository.GetAsync(requestViewModel.TipoPostId, cancellationToken);
+        var tipoPost = await tipoPostRepository.GetAsync(requestViewModel.TipoPostId.Value, cancellationToken);
 
         if (tipoPost == null)
         {
@@ -89,11 +89,11 @@ public class HomeAuthController(IResponseControler responseControler,
 
         Post model = new(name: requestViewModel.Name,
             title: requestViewModel.Title,
-            date: requestViewModel.Date,
+            date: requestViewModel.Date.Value,
             image: requestViewModel.Image,
             tipoPostId: tipoPost.Id,
             corpo: requestViewModel.Corpo,
-            liberado: requestViewModel.Liberado);
+            liberado: requestViewModel.Liberado.Value);
 
 
         await repository.InsertAsync(model, cancellationToken);
@@ -111,7 +111,7 @@ public class HomeAuthController(IResponseControler responseControler,
             return;
         }
 
-        var tipoPost = await tipoPostRepository.GetAsync(requestViewModel.TipoPostId, cancellationToken);
+        var tipoPost = await tipoPostRepository.GetAsync(requestViewModel.TipoPostId.Value, cancellationToken);
 
         if (tipoPost == null)
         {
@@ -121,11 +121,11 @@ public class HomeAuthController(IResponseControler responseControler,
 
         model.Update(name: requestViewModel.Name,
             title: requestViewModel.Title,
-            date: requestViewModel.Date,
+            date: requestViewModel.Date.Value,
             image: requestViewModel.Image,
             tipoPostId: tipoPost.Id,
             corpo: requestViewModel.Corpo,
-            liberado: requestViewModel.Liberado);
+            liberado: requestViewModel.Liberado.Value);
 
         await repository.UpdateAsync(model, cancellationToken);
         responseControler.AddMessageSuccesso("Post editado com sucesso!");

@@ -20,6 +20,13 @@ public class HomeController(IResponseControler responseControler,
         responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
     }
 
+    [HttpPost, Route("getMenuIndex")]
+    public async Task GetMenuIndexRequest(CancellationToken cancellationToken)
+    {
+        responseControler.SetResponseData(await repository.GetTableMenuIndexAsync(cancellationToken));
+        responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
+    }
+
     [HttpPost, Route("select/{id}")]
     public async Task GetRequest(Guid id, CancellationToken cancellationToken)
     {

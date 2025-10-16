@@ -21,4 +21,10 @@ public interface IMenuRepository : IRelationalRepository<Menu, ResponseViewModel
     /// </summary>
     /// <returns></returns>
     Task<List<ResponseViewModel>> GetTableAsync(ELiberado liberado, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Retornar o menu principal 
+    /// </summary>
+    /// <returns></returns>
+    Task<ResponseViewModel> GetTableMenuIndexAsync(CancellationToken cancellationToken);
 }

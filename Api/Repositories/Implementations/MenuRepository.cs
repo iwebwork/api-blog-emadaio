@@ -53,6 +53,23 @@ public class MenuRepository(PostgresDbContext context,
             }).ToListAsync(cancellationToken);
     }
 
+    public async Task<ResponseViewModel> GetTableMenuIndexAsync(CancellationToken cancellationToken)
+    {
+        return await context.Menu
+            .Where(w => w.Index == Menu.EIndex.Sim)
+            .Select(s => new ResponseViewModel
+            {
+                Id = s.Id,
+                Label = s.Label,
+                TipoPostId = s.TipoPostId,
+                TipoPostNome = s.TipoPost.Nome,
+                Url = s.Url,
+                Path = s.Path,
+                Liberado = s.Liberado,
+                Index = s.Index
+            }).SingleAsync(cancellationToken);
+    }
+
 
 
     #region Metodos Privados

@@ -7,8 +7,14 @@ namespace Api.Repositories.Interfaces;
 
 public interface IPostRepository : IRelationalRepository<Post, ResponseViewModel, PostgresDbContext>
 {
+
     /// <summary>
     /// Retorna se entidade existe de acordo com o nome e tipo informado.
     /// </summary>
     Task<bool> AnyAsync(string name, Guid tipoPostId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Retorna posts conforme o tipo de post informado.
+    /// </summary>
+    Task<List<ResponseViewModel>> GetTableAsync(Guid tipoPostId, CancellationToken cancellationToken);
 }
