@@ -23,4 +23,14 @@ public class TipoPostRepository(PostgresDbContext context) :
             Nome = s.Nome
         }).ToListAsync(cancellationToken);
     }
+
+    public override async Task<object> GetSelectOptionsAsync(CancellationToken cancellationToken)
+    {
+        return await context.TipoPost
+            .Select(s => new SelectOptionsViewModel
+            {
+                Label = s.Nome,
+                Value = s.Id
+            }).ToListAsync(cancellationToken);
+    }
 }

@@ -16,6 +16,13 @@ public class HomeController(IResponseControler responseControler,
         responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
     }
 
+    [HttpPost, Route("getSelect")]
+    public async Task GetSelectRequest(CancellationToken cancellationToken)
+    {
+        responseControler.SetResponseData(await repository.GetSelectOptionsAsync(cancellationToken));
+        responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
+    }
+
     [HttpPost, Route("select/{id}")]
     public async Task GetRequest(Guid id, CancellationToken cancellationToken)
     {
