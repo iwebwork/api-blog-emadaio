@@ -46,7 +46,7 @@ public class MenuRepository(PostgresDbContext context,
                 Label = s.Label,
                 TipoPostId = s.TipoPostId,
                 TipoPostNome = s.TipoPost.Nome,
-                Url = $"{s.Url}?tipoPostId={s.TipoPostId}",
+                Url = s.Url,
                 Path = s.Path,
                 Liberado = s.Liberado,
                 Index = s.Index
