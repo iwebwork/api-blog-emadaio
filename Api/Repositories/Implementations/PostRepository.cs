@@ -28,7 +28,8 @@ public class PostRepository(PostgresDbContext context) :
             Name = s.Name,
             TipoPostId = s.TipoPost.Id,
             TipoNome = s.TipoPost.Nome,
-            Title = s.Title
+            Title = s.Title,
+            Resumo = s.Resumo
         }).ToListAsync(cancellationToken);
     }
 
@@ -47,7 +48,8 @@ public class PostRepository(PostgresDbContext context) :
                 Name = s.Name,
                 TipoPostId = s.TipoPost.Id,
                 TipoNome = s.TipoPost.Nome,
-                Title = s.Title
+                Title = s.Title,
+                Resumo = s.Resumo
             }).ToListAsync(cancellationToken);
     }
 }

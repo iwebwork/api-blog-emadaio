@@ -8,6 +8,7 @@ public class RequestViewModel : BaseViewModel
 {
     public string? Name { get; set; }
     public string? Title { get; set; }
+    public string? Resumo { get; set; }
     public DateTime? Date { get; set; } = DateTime.Now;
     public string? Image { get; set; }
     public Guid? TipoPostId { get; set; }
