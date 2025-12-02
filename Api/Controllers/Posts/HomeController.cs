@@ -14,7 +14,19 @@ public class HomeController(IResponseControler responseControler,
     [HttpPost, Route("getTable")]
     public async Task GetRequest(RequestViewModel requestViewModel, CancellationToken cancellationToken)
     {
+        if (!requestViewModel.TipoPostId.HasValue)
+        {
+            responseControler.AddMessageErro("O tipo do post é obrigatorio");
+            return;
+        }
         responseControler.SetResponseData(await repository.GetTableAsync(requestViewModel.TipoPostId.Value, cancellationToken));
+        responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
+    }
+
+    [HttpPost, Route("getPageList")]
+    public async Task GetPageList(RequestViewModel requestViewModel, CancellationToken cancellationToken)
+    {
+        responseControler.SetResponseData(await repository.GetTableAsync(requestViewModel, cancellationToken));
         responseControler.AddMessageSuccesso("Requisição feita com sucesso!");
     }
 

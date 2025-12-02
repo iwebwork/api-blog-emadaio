@@ -33,6 +33,30 @@ public class PostRepository(PostgresDbContext context) :
         }).ToListAsync(cancellationToken);
     }
 
+    public async Task<List<ResponseViewModel>> GetTableAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken)
+    {
+        return await context.Post
+        .Skip(requestViewModel.Skip)
+        .Take(requestViewModel.Take)
+        .Where(w => w.TipoPost.Id == requestViewModel.TipoPostId)
+        .Select(s => new ResponseViewModel
+        {
+            Id = s.Id,
+            Corpo = s.Corpo,
+            Date = s.Date,
+            Image = s.Image,
+            Liberado = s.Liberado,
+            LiberadoNome = s.Liberado.ToString(),
+            Name = s.Name,
+            TipoPostId = s.TipoPost.Id,
+            TipoNome = s.TipoPost.Nome,
+            Title = s.Title,
+            Resumo = s.Resumo
+        })
+        .ToListAsync(cancellationToken);
+
+    }
+
     public async Task<List<ResponseViewModel>> GetTableAsync(Guid tipoPostId, CancellationToken cancellationToken)
     {
         return await context.Post
@@ -50,6 +74,7 @@ public class PostRepository(PostgresDbContext context) :
                 TipoNome = s.TipoPost.Nome,
                 Title = s.Title,
                 Resumo = s.Resumo
-            }).ToListAsync(cancellationToken);
+            })
+            .ToListAsync(cancellationToken);
     }
 }

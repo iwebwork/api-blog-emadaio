@@ -17,4 +17,9 @@ public interface IPostRepository : IRelationalRepository<Post, ResponseViewModel
     /// Retorna posts conforme o tipo de post informado.
     /// </summary>
     Task<List<ResponseViewModel>> GetTableAsync(Guid tipoPostId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Retorna posts conforme o tipo de post informado.
+    /// </summary>
+    Task<List<ResponseViewModel>> GetTableAsync(RequestViewModel requestViewModel, CancellationToken cancellationToken);
 }
